@@ -1,0 +1,62 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# C extensions
+*.so
+
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+
+
+# Virtual environments
+.env
+.venv/
+venv/
+ENV/
+
+
+# Jupyter
+.ipynb_checkpoints
+
+
+# IDEs
+.vscode/
+.idea/
+
+
+# OS
+.DS_Store
+
+
+# Logs and databases
+*.log
+*.sqlite3
+
+
+# pytest
+.pytest_cache/
+
+
+# coverage
+.coverage
+htmlcov/
+
+
+# data (сырые/большие файлы)
+data/raw/
+
+
+# dotenv
+.env
+
+
+# misc
+*.swp
+
