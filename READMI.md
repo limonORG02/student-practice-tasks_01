@@ -1,116 +1,135 @@
 # Agri Yield Forecast — проект по прогнозированию урожайности
 
 ## Краткое описание
-Проект посвящён прогнозированию урожайности конкретной культуры на основе данных об окружающей среде и параметрах почвы.  
-Цель — сделать воспроизводимый pipeline: **сбор данных → предобработка → обучение моделей → оценка и визуализация**.
+Проект посвящён прогнозированию урожайности конкретной культуры на основе данных об окружающей среде и параметрах почвы. Цель — сделать воспроизводимый pipeline: **сбор данных → предобработка → обучение моделей → оценка и визуализация**.
 
-**Статус:** начальная инициализация (README + .gitignore + структура репозитория)
+## Статус
+Базовая структура проекта создана. Включены рабочие модули для:
+- предобработки данных (`src/data_preprocessing.py`),
+- обучения моделей (`src/model_training.py`),
+- оценки моделей (`src/evaluation.py`).
 
----
+Добавлен тестовый CSV-файл `data/sample/crop_data.csv`, который используется для проверки пайплайна.
 
 ## Быстрый старт
 
 ### Требования
-- Git  
-- Anaconda (рекомендовано) или Python 3.8+  
-- Jupyter / JupyterLab  
+- Git
+- Anaconda (рекомендовано) или Python 3.8+
+- Jupyter / JupyterLab
 
-### Клонирование и создание окружения (пример)
+### Установка
+
+Клонирование репозитория и создание окружения:
 ```bash
 git clone <URL_REPO>
 cd agri-yield-forecast
 
-# если есть environment.yml
-conda env create -f environment.yml
+# через conda
+tonda env create -f environment.yml
 conda activate agri-yield
 
-# либо (если только requirements.txt)
+# либо через pip
+python3 -m venv .venv
+source .venv/bin/activate   # Linux/Mac
+.venv\\Scripts\\activate    # Windows
 pip install -r requirements.txt
+```
 
+Запуск JupyterLab:
+```bash
 jupyter lab
 ```
 
----
-
-## Структура репозитория (предложение)
+### Структура репозитория
 ```
 agri-yield-forecast/
 ├── data/
 │   ├── raw/             # исходные (сырые) данные (игнорируются в git)
-│   └── processed/       # очищенные/обработанные данные (по необходимости)
-├── notebooks/           # Jupyter ноутбуки (исследования)
+│   │   └── .gitkeep
+│   ├── processed/       # очищенные/обработанные данные
+│   │   └── .gitkeep
+│   └── sample/          # пример данных для тестов
+│       └── crop_data.csv
+├── notebooks/           # Jupyter ноутбуки
 │   ├── 01_data_cleaning.ipynb
 │   ├── 02_modeling.ipynb
 │   └── 03_evaluation.ipynb
-├── src/                 # python-модули (data_preprocessing, model_training, evaluation)
+├── src/                 # python-модули
 │   ├── __init__.py
 │   ├── data_preprocessing.py
 │   ├── model_training.py
 │   └── evaluation.py
 ├── tests/               # тесты pytest
+│   ├── __init__.py
+│   └── test_sample.py
 ├── requirements.txt
 ├── environment.yml
 ├── README.md
 └── .gitignore
 ```
 
----
+### Данные
+- **Сырые данные** помещаем в `data/raw/` (игнорируются в git).
+- **Обработанные данные** сохраняем в `data/processed/`.
+- **Примеры** для тестов и обучения пайплайна — в `data/sample/`.
 
-## Данные
-- Помещаем сырые данные в `data/raw/` — эти файлы **не должны попадать в git** (возможно большие/чувствительные).  
-- Для этого `data/raw/` включён в `.gitignore`.  
-- Обработанные данные и небольшие примеры можно хранить в `data/processed/` или `data/sample/` и отслеживать в репозитории при необходимости.  
-- Советуем положить в `data/raw/` файл `.gitkeep`, чтобы каталог существовал в репозитории локально до добавления реальных данных.  
+Пример датасета `data/sample/crop_data.csv` содержит столбцы:
+- `temperature` — температура (°C),
+- `rain` — осадки (мм),
+- `soil_quality` — индекс качества почвы (0–1),
+- `yield` — урожайность (т/га).
 
----
+### Запуск пайплайна
 
-## Рабочий процесс и ветки
-- `develop` — основная ветка разработки.  
-- `main` — ветка релизов/стабильного кода.  
-- Feature-ветки: `feature/<описание>`.  
+1. Загрузка и очистка данных:
+```python
+from src.data_preprocessing import load_data, clean_data, split_features_target
 
-### Пример первого коммита
+df = load_data("data/sample/crop_data.csv")
+df_clean = clean_data(df)
+X, y = split_features_target(df_clean, "yield")
+```
+
+2. Обучение модели:
+```python
+from src.model_training import train_model
+
+model = train_model(X, y)
+```
+
+3. Оценка качества:
+```python
+from src.evaluation import evaluate_model
+
+mse = evaluate_model(model, X, y)
+print("MSE:", mse)
+```
+
+### Тестирование
+Запуск тестов:
 ```bash
-git checkout -b develop
-git add .
-git commit -m "chore(init): initial repo structure, add README and .gitignore"
-git push -u origin develop
+pytest
 ```
 
----
-
-## Тестирование
-- Запуск: `pytest`  
-- Рекомендуется добавить базовые тесты для функций предобработки данных и небольшую тестовую выборку.  
-
----
-
-## Код-стайл и CI
-- Форматирование: `black`  
-- Линтер: `flake8` или `ruff`  
-- CI (рекомендуется): GitHub Actions для автоматического запуска тестов и линтинга на PR.  
-
----
-
-## Коммит-месседж и соглашения
-- Формат: `type(scope): short description`  
-  - Примеры:  
-    - `chore(init): ...`  
-    - `feat(model): ...`  
-    - `fix(data): ...`  
-- Пулл-реквесты: PR в `develop`, fast-forward в `main` только после проверки.  
-
----
-
-## Лицензия
-Добавь файл `LICENSE` (например, MIT) по необходимости.  
-
----
-
-## Следующие шаги (рекомендуемые)
-1. Добавить `environment.yml` или `requirements.txt` с версиями библиотек.  
-2. Положить небольшой sample-датасет в `data/sample/` для воспроизводимости (или дать ссылку на источник данных).  
-3. Создать первый ноутбук `notebooks/01_data_cleaning.ipynb` с базовой предобработкой.  
-4. Реализовать функции в `src/data_preprocessing.py` и `src/model_training.py`.  
-5. Настроить CI (GitHub Actions) для тестов и линтера.  
+### Код-стайл
+Форматирование и линтеры:
+```bash
+black src/ tests/
+flake8 src/ tests/
 ```
+
+### Рабочий процесс и ветки
+- **develop** — основная ветка разработки.
+- **main** — релизы/стабильный код.
+- **feature/<описание>** — новые фичи.
+
+### Коммиты
+Формат сообщений:
+```
+type(scope): short description
+```
+Примеры: `chore(init): ...`, `feat(model): ...`, `fix(data): ...`.
+
+### Лицензия
+Добавь файл LICENSE (например, MIT), если требуется.
