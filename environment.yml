@@ -1,0 +1,10 @@
+name: agri-yield
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - joblib
+  - pytest
