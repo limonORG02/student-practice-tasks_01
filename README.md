@@ -3,7 +3,7 @@
 Аналитический проект для обработки данных сельского хозяйства и прогнозирования урожайности на основе исторических данных.
 
 ## Структура проекта
-
+```bash
 student-practice-tasks_01/
 │── src/ # Исходный код проекта
 │ ├── data_preprocessing.py # Загрузка и очистка данных
@@ -17,11 +17,12 @@ student-practice-tasks_01/
 │── requirements.txt # Список зависимостей
 │── README.md # Документация проекта
 
+---
 
 ## Установка и запуск
 
 ### 1. Клонирование репозитория
-```bash
+
 git clone https://github.com/<org>/student-practice-tasks_01.git
 cd student-practice-tasks_01
 
