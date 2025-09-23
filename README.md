@@ -16,24 +16,25 @@ student-practice-tasks_01/
 │ └── test__sample.py
 │── requirements.txt # Список зависимостей
 │── README.md # Документация проекта
-
+```
 ---
 
 ## Установка и запуск
 
 ### 1. Клонирование репозитория
-
+```
 git clone https://github.com/<org>/student-practice-tasks_01.git
 cd student-practice-tasks_01
-
+```
 2. Установка зависимостей
-
+```
 pip install -r requirements.txt
-
+```
 3. Запуск тестов
-
+```
 pytest
 
+```
 Возможности
 
     Загрузка и предобработка CSV-данных
@@ -49,7 +50,7 @@ pytest
     Визуализация трендов (matplotlib, seaborn)
 
 Пример использования
-
+```
 from src.data_preprocessing import load_data, clean_data, split_features_target
 from src.model_training import train_model
 from src.evaluation import evaluate_model
@@ -58,7 +59,7 @@ from src.evaluation import evaluate_model
 df = load_data("data/sample/crop_data.csv")
 df_clean = clean_data(df)
 X, y = split_features_target(df_clean, "yield")
-
+```
 # Обучение модели
 model = train_model(X, y)
 
@@ -67,7 +68,7 @@ mse = evaluate_model(model, X, y)
 print("MSE:", mse)
 
 Технологии
-
+```
     Python 3.12
 
     pandas, scikit-learn
@@ -77,3 +78,4 @@ print("MSE:", mse)
     pytest (тестирование)
 
     black, flake8 (код-стиль)
+```
