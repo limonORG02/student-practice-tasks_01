@@ -1,24 +1,78 @@
-# Agri Yield Forecast
+# Crop Yield Analysis
 
-Проект для прогнозирования урожайности конкретной культуры на основе данных об окружающей среде и параметрах почвы. Цель — воспроизводимый pipeline: загрузка данных → предобработка → обучение моделей → оценка → визуализация.
+Аналитический проект для обработки данных сельского хозяйства и прогнозирования урожайности на основе исторических данных.
 
-## Быстрый старт
+## Структура проекта
 
-### Требования
-- Python 3.10+ (рекомендуется через venv или conda)
-- Jupyter / JupyterLab
-- Git
+student-practice-tasks_01/
+│── src/ # Исходный код проекта
+│ ├── data_preprocessing.py # Загрузка и очистка данных
+│ ├── model_training.py # Обучение моделей
+│ ├── evaluation.py # Метрики и оценка качества
+│ └── init.py
+│── data/ # Датасеты
+│ └── sample/crop_data.csv
+│── test/ # Тесты (pytest)
+│ └── test__sample.py
+│── requirements.txt # Список зависимостей
+│── README.md # Документация проекта
 
-### Клонирование и установка зависимостей
+
+## Установка и запуск
+
+### 1. Клонирование репозитория
 ```bash
-git clone <URL_REPO>
-cd agri-yield-forecast
+git clone https://github.com/<org>/student-practice-tasks_01.git
+cd student-practice-tasks_01
 
-# Через pip
-python3 -m venv venv
-source venv/bin/activate
+2. Установка зависимостей
+
 pip install -r requirements.txt
 
-# Через conda (если используешь environment.yml)
-conda env create -f environment.yml
-conda activate agri-yield
+3. Запуск тестов
+
+pytest
+
+Возможности
+
+    Загрузка и предобработка CSV-данных
+
+    Очистка пропусков и аномалий
+
+    Разделение признаков и целевой переменной
+
+    Обучение моделей для прогнозирования урожайности
+
+    Оценка качества моделей по метрике MSE
+
+    Визуализация трендов (matplotlib, seaborn)
+
+Пример использования
+
+from src.data_preprocessing import load_data, clean_data, split_features_target
+from src.model_training import train_model
+from src.evaluation import evaluate_model
+
+# Загрузка и предобработка
+df = load_data("data/sample/crop_data.csv")
+df_clean = clean_data(df)
+X, y = split_features_target(df_clean, "yield")
+
+# Обучение модели
+model = train_model(X, y)
+
+# Оценка
+mse = evaluate_model(model, X, y)
+print("MSE:", mse)
+
+Технологии
+
+    Python 3.12
+
+    pandas, scikit-learn
+
+    matplotlib, seaborn
+
+    pytest (тестирование)
+
+    black, flake8 (код-стиль)
