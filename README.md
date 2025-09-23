@@ -61,12 +61,18 @@ df_clean = clean_data(df)
 X, y = split_features_target(df_clean, "yield")
 ```
 # Обучение модели
+```
 model = train_model(X, y)
 
+```
+
 # Оценка
+
+```
 mse = evaluate_model(model, X, y)
 print("MSE:", mse)
 
+```
 Технологии
 ```
     Python 3.12
