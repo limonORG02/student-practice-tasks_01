@@ -1,41 +1,19 @@
-"""src/model_training.py
-Обучение моделей, кросс-валидация, сохранение/загрузка.
-"""
-from typing import Any, Dict, Optional
-import numpy as np
-import pandas as pd
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import cross_val_score, KFold
-import joblib
-from pathlib import Path
+from sklearn.metrics import mean_squared_error
 
 
-def train_linear_regression(X: pd.DataFrame, y: pd.Series) -> LinearRegression:
+def train_model(X, y):
+    """Обучает модель линейной регрессии."""
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
     model = LinearRegression()
-    model.fit(X, y)
+    model.fit(X_train, y_train)
+
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+
+    print(f"[INFO] Обучение завершено. MSE: {mse:.4f}")
     return model
-
-
-def train_random_forest(
-    X: pd.DataFrame, y: pd.Series, n_estimators: int = 100, random_state: int = 42
-) -> RandomForestRegressor:
-    model = RandomForestRegressor(n_estimators=n_estimators, random_state=random_state)
-    model.fit(X, y)
-    return model
-
-
-def cross_validate_model(model: Any, X: pd.DataFrame, y: pd.Series, cv: int = 5) -> Dict[str, float]:
-    """Возвращает словарь с средней и std метрики (R2) по кросс-валидации."""
-    kf = KFold(n_splits=cv, shuffle=True, random_state=42)
-    scores = cross_val_score(model, X, y, cv=kf, scoring="r2")
-    return {"r2_mean": float(scores.mean()), "r2_std": float(scores.std())}
-
-
-def save_model(model: Any, path: str) -> None:
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    joblib.dump(model, path)
-
-
-def load_model(path: str) -> Any:
-    return joblib.load(path)

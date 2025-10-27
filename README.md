@@ -1,55 +1,63 @@
-# Crop Yield Analysis
+#  Crop Yield Analysis
 
-Аналитический проект для обработки данных сельского хозяйства и прогнозирования урожайности на основе исторических данных.
+Аналитический проект для обработки сельскохозяйственных данных и прогнозирования урожайности культур на основе исторических данных.
 
-## Структура проекта
-```bash
-student-practice-tasks_01/
-│── src/ # Исходный код проекта
-│ ├── data_preprocessing.py # Загрузка и очистка данных
-│ ├── model_training.py # Обучение моделей
-│ ├── evaluation.py # Метрики и оценка качества
-│ └── init.py
-│── data/ # Датасеты
-│ └── sample/crop_data.csv
-│── test/ # Тесты (pytest)
-│ └── test__sample.py
-│── requirements.txt # Список зависимостей
-│── README.md # Документация проекта
-```
 ---
 
-## Установка и запуск
+## Описание проекта
 
-### 1. Клонирование репозитория
+Цель проекта — продемонстрировать применение методов **машинного обучения** для анализа факторов окружающей среды (температура, осадки, качество почвы) и прогнозирования урожайности сельхозкультур.
+
+В проекте реализованы:
+- загрузка и предварительная обработка данных;
+- обучение моделей машинного обучения;
+- оценка качества и визуализация результатов.
+
+---
+
+## Структура проекта
+
+```bash
+student-practice-tasks_01/
+│
+├── src/                      # Исходный код
+│   ├── data_preprocessing.py # Загрузка и очистка данных
+│   ├── model_training.py     # Обучение моделей
+│   ├── evaluation.py         # Метрики и оценка качества
+│   └── __init__.py
+│
+├── data/                     # Датасеты
+│   └── sample/
+│       └── crop_data.csv
+│
+├── test/                     # Тесты (pytest)
+│   └── test_sample.py
+│
+├── requirements.txt          # Зависимости проекта
+└── README.md                 # Документация
+
+ Установка и запуск
+###1. Клонирование репозитория
 ```
-git clone https://github.com/<org>/student-practice-tasks_01.git
+git clone git@github.com:limonORG02/student-practice-tasks_01.git
 cd student-practice-tasks_01
 ```
-2. Установка зависимостей
+###2. Создание виртуального окружения
+```
+python -m venv venv
+source venv/bin/activate   # Linux / macOS
+venv\Scripts\activate      # Windows
+```
+###3. Установка зависимостей
 ```
 pip install -r requirements.txt
 ```
-3. Запуск тестов
+###4. Запуск тестов
 ```
-pytest
+./run_tests.sh
 
 ```
-Возможности
-
-    Загрузка и предобработка CSV-данных
-
-    Очистка пропусков и аномалий
-
-    Разделение признаков и целевой переменной
-
-    Обучение моделей для прогнозирования урожайности
-
-    Оценка качества моделей по метрике MSE
-
-    Визуализация трендов (matplotlib, seaborn)
-
-Пример использования
+## Пример использования
 ```
 from src.data_preprocessing import load_data, clean_data, split_features_target
 from src.model_training import train_model
@@ -58,30 +66,23 @@ from src.evaluation import evaluate_model
 # Загрузка и предобработка
 df = load_data("data/sample/crop_data.csv")
 df_clean = clean_data(df)
-X, y = split_features_target(df_clean, "yield")
-```
+X, y = split_features_target(df_clean, target="yield")
+
 # Обучение модели
-```
 model = train_model(X, y)
 
-```
-
 # Оценка
-
-```
 mse = evaluate_model(model, X, y)
 print("MSE:", mse)
-
 ```
-Технологии
-```
-    Python 3.12
+## Используемые технологии
 
-    pandas, scikit-learn
+ Python 3.12
 
-    matplotlib, seaborn
+ pandas, scikit-learn
 
-    pytest (тестирование)
+ matplotlib, seaborn
 
-    black, flake8 (код-стиль)
-```
+ pytest — тестирование
+
+ black, flake8 — стиль и форматирование кода
